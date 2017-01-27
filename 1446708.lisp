@@ -48,5 +48,10 @@
 ; splits the elements of L into a list of two sublists (L1 L2),
 ; by putting elements from L into L1 and L2 alternatingly.
 (defun split(L)
+	(if (null L)
+		L
+		(cons (car L) (split(cddr L)))
+	)
 ;placehold end
 )
+(print(split '(1 2 3 4 5 6)))
