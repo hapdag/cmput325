@@ -28,24 +28,25 @@
 )
 
 ; Question 3
-; that mixes the elements of L1 and L2 into a single list,
+; mixes the elements of L1 and L2 into a single list,
 ; by choosing elements from L1 and L2 alternatingly. 
 ; If one list is shorter than the other, then append all elements from the longer list at the end.
 (defun mix (L1 L2)
-	(if (equal L1 nil)
+	(if (equal L2 nil) ; if list s empty, just concatenate the two lists
 		(append L1 L2)
-		(if (null L2)
-			(cons L2 ())
-			(if (cdr L2)
-				(cons (car L2) (mix (cdr L2) L1))
-				(cons (car L2)  L1)
-			)
+	(if (equal L1 nil)
+		(append L1 L2) ; if list s empty, just concatenate the two lists
+		(if (cdr L2) ; if there is more than one atom left in the list
+			(cons (car L2) (mix (cdr L2) L1)) ; recurse on lists in different orders
+			(cons (car L2)  L1) ; or simply concatenate
 		)
+	)
 	)
 )
 
-(print(mix '(d e f) '(a b c)))
-(print(mix '(a) '(1 2 3)))
-(print (mix '(d e f g h) '((a) (b c))))
-(print(mix nil '(1 2 3)))
-(print(mix '(nil) '(1 2 3)))
+; Question 4
+; splits the elements of L into a list of two sublists (L1 L2),
+; by putting elements from L into L1 and L2 alternatingly.
+(defun split(L)
+;placehold end
+)
