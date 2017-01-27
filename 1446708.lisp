@@ -32,9 +32,20 @@
 ; by choosing elements from L1 and L2 alternatingly. 
 ; If one list is shorter than the other, then append all elements from the longer list at the end.
 (defun mix (L1 L2)
-	(if (null L1)
+	(if (equal L1 nil)
 		(append L1 L2)
+		(if (null L2)
+			(cons L2 ())
+			(if (cdr L2)
+				(cons (car L2) (mix (cdr L2) L1))
+				(cons (car L2)  L1)
+			)
+		)
 	)
 )
 
- (print(mix '() '(a b c)))
+(print(mix '(d e f) '(a b c)))
+(print(mix '(a) '(1 2 3)))
+(print (mix '(d e f g h) '((a) (b c))))
+(print(mix nil '(1 2 3)))
+(print(mix '(nil) '(1 2 3)))
