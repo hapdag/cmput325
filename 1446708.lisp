@@ -49,14 +49,14 @@
 ; by putting elements from L into L1 and L2 alternatingly.
 (defun odds(L)
 	(if (null L)
-		L
+		nil
 		(cons (car L) (odds(cddr L)))
 	)
 )
 
 (defun evens(L)
 	(if (null(cdr L))
-		()
+		nil
 		(cons (cadr L) (evens(cddr L)))
 	)
 )
@@ -114,36 +114,33 @@
 			(clearlist S (cdr L))
 		)
 	)
-)
+)	
 
 (defun findsubset(S L)
 	(cond
-		((null L) L)
+
+		((null L) nil)
+
+		((= (car L) S)
+			(cons (car L) ()))
 		
 		((> (car L) S)
-			(findsubset S (cdr L))
-		)
-		
-		((= (car L) S)
-			(cons (car L) ())
-		)
+			nil)
 		
 		((< (car L) S)
-			(if (null (findsubset (- S (car L)) (cdr L)))
-				(findsubset S (cdr L))
-				(cons (car L) (findsubset (- S (car L)) (cdr L)))
-			)
-			
+			(let ((Q (findsubset (- S (car L)) (cdr L)))) 
+				(if (null Q) (findsubset S (cdr L))
+				(cons (car L) Q) ))
 		)
 	)
-
 )
+
 
 (defun subsetsum (S L)
 	(let ((Q (sort (copy-list L) #'<))) 
 		(reorder L (findsubset S (clearlist S Q))))
 )
 
-
-(time(subsetsum  19394619312  '(2847913718 1856672462 3203456518 2797622814 3724390038 1663068398 830344358 1086471998 2991012918 2748329230 4247576902 3832309342 853147606 2918055726 3556899814 1272310654 1110022518 767295310 1397226630 3379818142 3162482966 2963950958 2117042982 2906230718 1906036406 2239170958 510603206 666365662 2488511062 3931001774 2867044966 3409849342 1077074934 2833927118 1412397830 3405342494 3038446486 1085477358 3613088166 404013118)))
-
+; (print(split '(1 2 3 4 5 6)))
+; (print (split '((a) (b c) (d e f) g h)) )
+(print (split '()))
