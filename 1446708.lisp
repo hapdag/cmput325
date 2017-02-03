@@ -93,9 +93,16 @@
 ; than the list returned by (car(split L)) by 1, therefore removing the problem of bad inputs for the mix function call.
 ; Proving that (mix(cadr(split L))(car(split L))) always returns L.
 
+
 ; Question 6 subset sum
 ; given a list of numbers L and a sum S, find a subset of the numbers in L that sums up to S. 
 ; Each number in L can only be used once.
+; First the input list is sorted, and then checked to remove all veriables bigger than Sum input since there are no
+; need for them, then the sorted list in passed ino findsubsets to find the appropriate subset which sums up to the
+; input Sum
+
+; reorder function, after findsubset is done a ordered list is returned, reorder rearrange the list order to
+; match the ordering of the original input list
 (defun reorder (L Q)
 	(if (null L)
 		L
@@ -106,6 +113,7 @@
 	)
 )
 
+; clear list goes through the sorted list and clears all atoms that are greater than the input sum
 (defun clearlist (S L)
 	(if (null L)
 		L
@@ -116,6 +124,14 @@
 	)
 )	
 
+; find subset returns the set of numbers that adds up to the total input Sum, returns nil if there are no applicable
+; set. It will check for values equals or greater, finding an element equal meaning the end of of recursion, cons 
+; the element in a list and end. Finding an element greater means it can stop checking further down the list, since
+; the list is sorted in ascending order all other elements must be also greater than S, therefore we return nil.
+; If the element is smaller than S, which mean potential member of the subset, findsubset calls itself with (S-L1)
+; and the rest of list L, finding whether or not L1 is actually part of the subset recursively. If L1 is a part of
+; the subset, then we construct the list, otherwise we remove that element and recall finsubset with the original 
+; Sum value and the rest of the list L
 (defun findsubset(S L)
 	(cond
 
@@ -140,7 +156,3 @@
 	(let ((Q (sort (copy-list L) #'<))) 
 		(reorder L (findsubset S (clearlist S Q))))
 )
-
-; (print(split '(1 2 3 4 5 6)))
-; (print (split '((a) (b c) (d e f) g h)) )
-(print (split '()))
