@@ -49,14 +49,14 @@
 ; by putting elements from L into L1 and L2 alternatingly.
 (defun odds(L)
 	(if (null L)
-		L
+		nil
 		(cons (car L) (odds(cddr L)))
 	)
 )
 
 (defun evens(L)
 	(if (null(cdr L))
-		()
+		nil
 		(cons (cadr L) (evens(cddr L)))
 	)
 )
@@ -93,9 +93,16 @@
 ; than the list returned by (car(split L)) by 1, therefore removing the problem of bad inputs for the mix function call.
 ; Proving that (mix(cadr(split L))(car(split L))) always returns L.
 
+
 ; Question 6 subset sum
 ; given a list of numbers L and a sum S, find a subset of the numbers in L that sums up to S. 
 ; Each number in L can only be used once.
+; First the input list is sorted, and then checked to remove all veriables bigger than Sum input since there are no
+; need for them, then the sorted list in passed ino findsubsets to find the appropriate subset which sums up to the
+; input Sum
+
+; reorder function, after findsubset is done a ordered list is returned, reorder rearrange the list order to
+; match the ordering of the original input list
 (defun reorder (L Q)
 	(if (null L)
 		L
@@ -106,6 +113,7 @@
 	)
 )
 
+; clear list goes through the sorted list and clears all atoms that are greater than the input sum
 (defun clearlist (S L)
 	(if (null L)
 		L
@@ -114,36 +122,37 @@
 			(clearlist S (cdr L))
 		)
 	)
-)
+)	
 
+; find subset returns the set of numbers that adds up to the total input Sum, returns nil if there are no applicable
+; set. It will check for values equals or greater, finding an element equal meaning the end of of recursion, cons 
+; the element in a list and end. Finding an element greater means it can stop checking further down the list, since
+; the list is sorted in ascending order all other elements must be also greater than S, therefore we return nil.
+; If the element is smaller than S, which mean potential member of the subset, findsubset calls itself with (S-L1)
+; and the rest of list L, finding whether or not L1 is actually part of the subset recursively. If L1 is a part of
+; the subset, then we construct the list, otherwise we remove that element and recall finsubset with the original 
+; Sum value and the rest of the list L
 (defun findsubset(S L)
 	(cond
-		((null L) L)
+
+		((null L) nil)
+
+		((= (car L) S)
+			(cons (car L) ()))
 		
 		((> (car L) S)
-			(findsubset S (cdr L))
-		)
-		
-		((= (car L) S)
-			(cons (car L) ())
-		)
+			nil)
 		
 		((< (car L) S)
-			(if (null (findsubset (- S (car L)) (cdr L)))
-				(findsubset S (cdr L))
-				(cons (car L) (findsubset (- S (car L)) (cdr L)))
-			)
-			
+			(let ((Q (findsubset (- S (car L)) (cdr L)))) 
+				(if (null Q) (findsubset S (cdr L))
+				(cons (car L) Q) ))
 		)
 	)
-
 )
+
 
 (defun subsetsum (S L)
 	(let ((Q (sort (copy-list L) #'<))) 
 		(reorder L (findsubset S (clearlist S Q))))
 )
-
-
-(time(subsetsum  19394619312  '(2847913718 1856672462 3203456518 2797622814 3724390038 1663068398 830344358 1086471998 2991012918 2748329230 4247576902 3832309342 853147606 2918055726 3556899814 1272310654 1110022518 767295310 1397226630 3379818142 3162482966 2963950958 2117042982 2906230718 1906036406 2239170958 510603206 666365662 2488511062 3931001774 2867044966 3409849342 1077074934 2833927118 1412397830 3405342494 3038446486 1085477358 3613088166 404013118)))
-
