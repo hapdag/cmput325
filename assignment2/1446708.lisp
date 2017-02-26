@@ -1,6 +1,6 @@
 (defun fl-interp (E P)
   (cond 
-	((atom E) E)   %this includes the case where expr is nil
+	((atom E) E)   ;this includes the case where expr is nil
         (t
            (let ( (f (car E))  (arg (cdr E)) )
 	      (cond 
