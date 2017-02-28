@@ -28,8 +28,8 @@
 ; (starteval '(car (cons 1 (cons 2 nil))))
 ; (starteval '(cdr (cons 1 (cons 2 nil))))    # note it returns a Lisp list, since calling the Lisp cdr in our interpreter
 ; (starteval '((lambda (x) (+ x 1)) 5))
-(starteval '(((lambda (x y) (lambda (x) (+ x y))) 2 3) 4))
+; (starteval '(((lambda (x y) (lambda (x) (+ x y))) 2 3) 4))
 ; (starteval '((lambda (x) (x 2))  (lambda (x) (+ x 1))))
 ; (starteval '((lambda (x y) (+ x y))  ((lambda (y z) (+ y z)) 2 3) 4))
 ; (starteval '(lambda (x y) (lambda ())))
-; U1: (fl-interp '(greater 3 5) '((greater x y = (if (> x y) x (if (< x y) y nil))))) ; > '5
+(fl-interp '(greater 3 5) '((greater x y = (if (> x y) x (if (< x y) y nil))))) ; > '5

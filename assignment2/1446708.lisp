@@ -6,13 +6,18 @@
         (cond 
           ; handle built-in functions
           ((eq f 'first)  (car (fl-interp (car arg) P)))
-	      ..... 
+	      ; ..... filler
 
 	      ; if f is a user-defined function,
           ;    then evaluate the arguments 
           ;         and apply f to the evaluated arguments 
           ;             (applicative order reduction) 
-          .....
+          ; ..... filler
 
           ; otherwise f is undefined; in this case,
           ; E is returned as if it is quoted in lisp
+        )
+      )
+    )
+  )
+)
