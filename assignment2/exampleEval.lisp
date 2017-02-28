@@ -31,3 +31,5 @@
 (starteval '(((lambda (x y) (lambda (x) (+ x y))) 2 3) 4))
 ; (starteval '((lambda (x) (x 2))  (lambda (x) (+ x 1))))
 ; (starteval '((lambda (x y) (+ x y))  ((lambda (y z) (+ y z)) 2 3) 4))
+; (starteval '(lambda (x y) (lambda ())))
+; U1: (fl-interp '(greater 3 5) '((greater x y = (if (> x y) x (if (< x y) y nil))))) ; > '5
