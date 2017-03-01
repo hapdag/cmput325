@@ -57,7 +57,7 @@
 ; (print(fl-interp '(or (= 5 (- 4 2)) (and (not (> 2 2)) (< 3 2))) nil)) ; > 'nil
 ; (print(fl-interp '(if (not (null (first (a c e)))) (if (isnumber (first (a c e))) (first (a c e)) (cons (a c e) d)) (rest (a c e))) nil)) ; > '((a c e) . d)
 
-; (fl-interp '(greater 3 5) '((greater x y = (if (> x y) x (if (< x y) y nil))))) ; > '5
+(fl-interp '(greater 3 5) '((greater x y = (if (> x y) x (if (< x y) y nil))))) ; > '5
 ; (fl-interp '(square 4) '((square x = (* x x)))) ; > '16
 ; (fl-interp '(simpleinterest 4 2 5) '((simpleinterest x y z = (* x (* y z))))) ; > '40
 ; (fl-interp '(xor t nil) '((xor x y = (if (equal x y) nil t)))) ; > 't

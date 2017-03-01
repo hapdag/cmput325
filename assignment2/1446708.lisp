@@ -1,3 +1,7 @@
+(defun usreval (funname arg funbody)
+  (print funname )
+)
+
 (defun fl-interp (E P)
   (cond 
     ((atom E) E)   ;this includes the case where expr is nil
@@ -33,7 +37,10 @@
 	      ; if f is a user-defined function,
           ;    then evaluate the arguments 
           ;         and apply f to the evaluated arguments 
-          ;             (applicative order reduction) 
+          ;             (applicative order reduction)
+          ; Passing info into user-defined function handler
+          ; function name, function arguments
+          (t (usreval f arg P))
           ; ..... filler
 
           ; otherwise f is undefined; in this case,
