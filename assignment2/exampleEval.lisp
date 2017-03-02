@@ -62,27 +62,27 @@
 (print(fl-interp '(simpleinterest 4 2 5) '((simpleinterest x y z = (* x (* y z))))) ); > '40
 (print(fl-interp '(xor t nil) '((xor x y = (if (equal x y) nil t)))) ); > 't
 
-; ; complex user defined cases
+; ; ; complex user defined cases
 
-(print(fl-interp '(last (s u p)) '((last x = (if (null (rest x)) (first x) (last (rest x)))))) ); > 'p
-(print(fl-interp '(push (1 2 3) 4) '((push x y = (if (null x) (cons y nil) (cons (first x) (push (rest x) y)))))) ); > '(1 2 3 4)
-(print(fl-interp '(pop (1 2 3)) '((pop x = (if (atom (rest (rest x))) (cons (first x) nil) (cons (first x)(pop (rest x))))))) ); > '(1 2)
-(print(fl-interp '(power 4 2) '((power x y = (if (= y 1) x (power (* x x) (- y 1)))))) ); > '16
-(print(fl-interp '(factorial 4) '((factorial x = (if (= x 1) 1 (* x (factorial (- x 1))))))) ); > '24
-(print(fl-interp '(divide 24 4) '((divide x y = (div x y 0)) (div x y z = (if (> (* y z) x) (- z 1) (div x y (+ z 1)))))) ); > '6 
-(print (fl-interp '(h (g 5)) '((g X = (g (g X)))(h X = a )))) ; > a
+; (print(fl-interp '(last (s u p)) '((last x = (if (null (rest x)) (first x) (last (rest x)))))) ); > 'p
+; (print(fl-interp '(push (1 2 3) 4) '((push x y = (if (null x) (cons y nil) (cons (first x) (push (rest x) y)))))) ); > '(1 2 3 4)
+; (print(fl-interp '(pop (1 2 3)) '((pop x = (if (atom (rest (rest x))) (cons (first x) nil) (cons (first x)(pop (rest x))))))) ); > '(1 2)
+; (print(fl-interp '(power 4 2) '((power x y = (if (= y 1) x (power (* x x) (- y 1)))))) ); > '16
+; (print(fl-interp '(factorial 4) '((factorial x = (if (= x 1) 1 (* x (factorial (- x 1))))))) ); > '24
+; (print(fl-interp '(divide 24 4) '((divide x y = (div x y 0)) (div x y z = (if (> (* y z) x) (- z 1) (div x y (+ z 1)))))) ); > '6 
+; (print (fl-interp '(h (g 5)) '((g X = (g (g X)))(h X = a )))) ; > a
 
-    (print (fl-interp '(a (+ 1 2)) 
-            '( (a X = (+ X 1)) )
-    ) )
-; => 4
+;     (print (fl-interp '(a (+ 1 2)) 
+;             '( (a X = (+ X 1)) )
+;     ) )
+; ; => 4
 
-    (print(fl-interp '(b (+ 1 2)) 
-            '( (b X = (+ X 1)) )
-    ))
-; => 4
+;     (print(fl-interp '(b (+ 1 2)) 
+;             '( (b X = (+ X 1)) )
+;     ))
+; ; => 4
 
-    (print(fl-interp '(f (f 2)) 
-            '( (f X =  (* X X)) )
-    ))
-; => 16
+;     (print(fl-interp '(f (f 2)) 
+;             '( (f X =  (* X X)) )
+;     ))
+; ; => 16
