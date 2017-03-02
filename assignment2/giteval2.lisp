@@ -81,7 +81,7 @@
 (defun evaUserDef (F A P G)
 	(cond
 		((null P) (cons F A)																		)			
-		((and (equal F (caar P)) (checkArgLen A (getVar (cdar P)))     )   ( fl-interp   (switch A (getVar (cdar P)) (getBody (cdar P)) )  G	)      			)
+		((and (equal F (caar P)) (checkArgLen A (getVar (cdar P)))     )   ( fl-interp   (switch A (getVar (cdar P)) (getBody (cdar P)) )  (G)	)      			)
 		(t (evaUserDef F A (cdr P) G)																	)
 	)
 )
