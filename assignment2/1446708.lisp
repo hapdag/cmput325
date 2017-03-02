@@ -1,8 +1,8 @@
 
 
-; where X is an atom, V is some expression,
-; and E is a (possibly nested) list. The function sub does the job of substitution, i.e., it replaces
-; every occurrence of X in E with V. 
+; where ori is an atom, rep is some expression,
+; and expr is a (possibly nested) list. The function sub does the job of substitution, i.e., it replaces
+; every occurrence of ori in expr with rep. 
 (defun sub (ori rep expr)
   (cond 
     ((atom expr) (if (eq expr ori) rep expr))
@@ -14,9 +14,12 @@
 
 (defun usreval (funname arg funbody)
   (cond
-    (
-        )
-    )
+    ; if empty function body, return arguments
+    ((null funbody)  "debug0")
+    ; create context lists
+    ((equal funname (caar funbody))  "debug1")
+    ((not (equal funname (caar funbody))) "debug2" )
+  )
 )
 
 (defun fl-interp (E P)
