@@ -1,16 +1,20 @@
+(defun clearf (P)
+  ; (if (atom (car P)) 
+  ;   (clearf (cdr P) )
+  ;   (cons (car P) (cdr P))
+    (if (equal (car P) '=) (cadr P)
+      (clearf (cdr P)) 
+    )
+  )
+
+
 ; where ori is an atom, rep is some expression,
 ; and expr is a (possibly nested) list. The function sub does the job of substitution, i.e., it replaces
 ; every occurrence of ori in expr with rep. 
 (defun sub (ori rep expr)
   (cond
     ((null expr) nil)
-  ; (if (null ori) ori 
-  ;   (if (and (car ori) (atom expr) (if (eq expr (car ori)) (car rep) expr)  )  
-  ;     (cons (sub ori rep (car expr)) (sub (cdr ori) (cdr rep) (cdr expr)) )
-  ;     )
     ((atom expr) (if (eq expr ori) rep expr))
-    ((and (atom (car expr)) (equal ori (car expr)) (cons rep (sub rep ori (cdr expr)))))
-    ((and (atom (car expr)) (not (equal ori (car expr)) ) (cons (car expr) (sub rep ori (cdr expr)))))
     (t (cons (sub ori rep (car expr)) (sub ori rep (cdr expr)) ) )
   )
 )
@@ -28,25 +32,14 @@
   )
 )
 
-; (defun assoc (n v x)
-;   (if (null n) n
-;     (if (not (null n)) (locate (car n) (car v) x)
-;       (assoc)
-;     )
-;   )
-; )
-
-; (defun locate(l m x)
-; )
-
 (defun usreval (funname arg funbody P)
   (cond
     ; if empty function body, return arguments
-    ((null funbody)  "debug0")
+    ((null funbody) (cons funname arg ) )
     ; create context lists
-    ((equal funname (caar funbody))  (replacer (searcharg arg (cdar funbody)) arg funbody)  ) 
-    ((not (equal funname (caar funbody))) "debug2" )
-    ; (t (usreval funname arg (cdr funbody) P))
+    ((equal funname (caar funbody)) (fl-interp (replacer (searcharg arg (cdar funbody)) arg  (clearf (cdar funbody)))  P ) )
+    ; ((not (equal funname (caar funbody))) "debug2" )
+    (t (usreval funname arg (cdr funbody) P))
   )
 )
 
