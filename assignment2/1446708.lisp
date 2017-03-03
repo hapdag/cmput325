@@ -1,47 +1,3 @@
-(defun clearf (P)
-  ; (if (atom (car P)) 
-  ;   (clearf (cdr P) )
-  ;   (cons (car P) (cdr P))
-    (if (equal (car P) '=) (cadr P)
-      (clearf (cdr P)) 
-    )
-  )
-
-
-; where ori is an atom, rep is some expression,
-; and expr is a (possibly nested) list. The function sub does the job of substitution, i.e., it replaces
-; every occurrence of ori in expr with rep. 
-(defun sub (ori rep expr)
-  (cond
-    ((null expr) nil)
-    ((atom expr) (if (eq expr ori) rep expr))
-    (t (cons (sub ori rep (car expr)) (sub ori rep (cdr expr)) ) )
-  )
-)
-
-(defun searcharg (n v)
-  (if (null n) n
-    (cons (car v) (searcharg (cdr n) (cdr v)))
-  )
-)
-
-(defun replacer (x v e)
-  (cond
-    ((null x) e)
-    (t (replacer (cdr x) (cdr v) (sub (car x) (car v) e) ) )
-  )
-)
-
-(defun usreval (funname arg funbody P)
-  (cond
-    ; if empty function body, return arguments
-    ((null funbody) (cons funname arg ) )
-    ; create context lists
-    ((equal funname (caar funbody)) (fl-interp (replacer (searcharg arg (cdar funbody)) arg  (clearf (cdar funbody)))  P ) )
-    ; ((not (equal funname (caar funbody))) "debug2" )
-    (t (usreval funname arg (cdr funbody) P))
-  )
-)
 
 (defun fl-interp (E P)
   (cond 
@@ -88,5 +44,50 @@
         )
       )
     )
+  )
+)
+
+; returns user defined functions without identifiers the fl-interp interpreter cannot handle
+(defun clearf (P)
+  (if (equal (car P) '=) (cadr P)
+    (clearf (cdr P)) 
+  )
+)
+
+; where ori is an atom, rep is some expression,
+; and expr is a (possibly nested) list. The function sub does the job of substitution, i.e., it replaces
+; every occurrence of ori in expr with rep. 
+(defun sub (ori rep expr)
+  (cond
+    ((null expr) nil)
+    ((atom expr) (if (eq expr ori) rep expr))
+    (t (cons (sub ori rep (car expr)) (sub ori rep (cdr expr)) ) )
+  )
+)
+
+; using passed in parameters to find function arguments from user defined functions
+(defun searcharg (n v)
+  (if (null n) n
+    (cons (car v) (searcharg (cdr n) (cdr v)))
+  )
+)
+
+; iterate over both argument list and parameter list and substitute in expression
+(defun replacer (x v e)
+  (cond
+    ((null x) e)
+    (t (replacer (cdr x) (cdr v) (sub (car x) (car v) e) ) )
+  )
+)
+
+; main aux function for handling user defined functions
+(defun usreval (funname arg funbody P)
+  (cond
+    ; return the now evaluated function application with user input parameters binded with function arguments
+    ((null funbody) (cons funname arg ) )
+    ; find appropriate function, substitue function arguments with input parameters and hand evaluated founction to interpreter
+    ((equal funname (caar funbody)) (fl-interp (replacer (searcharg arg (cdar funbody)) arg  (clearf (cdar funbody)))  P ) )
+    
+    (t (usreval funname arg (cdr funbody) P))
   )
 )
