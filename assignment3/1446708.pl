@@ -1,4 +1,4 @@
-% =====QUESTION 1===== xreverse (1 mark)
+% >>>>>QUESTION 1 xreverse (1 mark)
 % Define the predicate xreverse(+L, ?R) to reverse a list, 
 % where L is a given list and R is either a variable or another given list.
 % Examples: 
@@ -15,7 +15,7 @@ xreverse(ListA,ListB):- xreverse(ListA,[],ListB).
 xreverse([Ahead|Atail],AccmL,ListB) :- xreverse(Atail,[Ahead|AccmL],ListB).
 xreverse([],AccmL,AccmL).
 
-% ======QUESTION 2====== xunique (2 marks)
+% >>>>>QUESTION 2 xunique (2 marks)
 % Define the predicate xunique(+L, ?O) 
 % where L is a given list of atoms and O is a copy of L where all the duplicates have been removed. 
 % O can be either a variable or a given list. The elements of O should be in the order in which they first appear in L.
@@ -43,7 +43,7 @@ notmember(X,[Head|Tail]):- X\==Head,notmember(X,Tail).
 member(X,[X|_]). 
 member(X,[_|Tail]):-  member(X,Tail).
 
-% ======QUESTION 3====== xdiff (1 mark)
+% >>>>>QUESTION 3 xdiff (1 mark)
 % Define the predicate xdiff(+L1, +L2, -L) where L1 and L2 are given lists of atoms,
 % and L contains the elements that are contained in L1 but not L2 (set difference of L1 and L2). 
 % Examples: 
@@ -63,7 +63,7 @@ xdiff([Ahead|Atail],ListB,Diff,AccmL):- notmember(Ahead,ListB),
 xdiff([Ahead|Atail],ListB,Diff,AccmL):- member(Ahead,ListB),xdiff(Atail,ListB,Diff,AccmL).
 xdiff([],_,AccmL,AccmL).
 
-% ======QUESTION 4====== removeLast (1 mark)
+% >>>>>QUESTION 4 removeLast (1 mark)
 % Define the predicate removeLast(+L, ?L1, ?Last) where L is a given non-empty list,
 % L1 is the result of removing the last element from L, and Last is that last element.
 % L1 and Last can be either variables or given values.
@@ -103,7 +103,7 @@ xsubset([X|Xs],Set):-xappend(_,[X|Set1],Set), xsubset(Xs,Set1).
 xappend([], L, L).
 xappend([H|T],L,[H|R]):- xappend(T,L,R).
 
-% ======QUESTION 5.1====== allConnected (2 marks)
+% >>>>>QUESTION 5.1 allConnected (2 marks)
 %Use the predicates clique, xsubset and xappend above.
 % Your job is to define the predicate allConnected(L) to test if each node in L is connected to each other node in L.
 % A node A is connected to another node B if either edge(A,B) or edge(B,A) is true.
@@ -124,17 +124,44 @@ allConnected([Lhead|Ltail]):- connect(Lhead,Ltail), allConnected(Ltail).
 connect(A,[Lhead|Ltail]):- edge(A,Lhead);edge(Lhead,A), connect(A,Ltail).
 connect(_,[]).
 
-% ======QUESTION 5.2======  maxclique (3 marks)
+% >>>>>QUESTION 5.2  maxclique (3 marks)
 % Write a predicate maxclique(+N, -Cliques) to compute all the maximal cliques of size N that are contained
 % in a given graph. N is the given input, Cliques is the output you compute: a list of cliques.
 % A clique is maximal if there is no larger clique that contains it. In the example above,
 % cliques [a,b,c] and [a,d] are maximal, but [a,b] is not, since it is contained in [a,b,c].
 % Examples (using the graph above): 
-% maxclique(2,Cliques) returns Cliques = [[a,d],[a,e]] 
-% maxclique(3,Cliques) returns Cliques = [[a,b,c]] 
-% maxclique(1,Cliques) returns Cliques = [] 
-% maxclique(0,Cliques) returns Cliques = []
+% maxclique(2,Cliques). returns Cliques = [[a,d],[a,e]] 
+% maxclique(3,Cliques). returns Cliques = [[a,b,c]] 
+% maxclique(1,Cliques). returns Cliques = [] 
+% maxclique(0,Cliques). returns Cliques = []
 % Your program should generate only one solution (the list Cliques). If the user presses ";" the next answer should be "false".
 % Different sets of facts about node and edge will be provided by us for testing your code. 
 % Do not include any facts about node and edge in your program! Keep them in a separate file that 
 % you load into Prolog for your testing only, and experiment with different graphs.
+
+maxclique(Len,Cliques):- findall(X, getCliqueSizeN(X,Len), Y), B is Len+1, 
+	findall(W, getCliqueSizeN(W,B), Z),returnMax(Y,Z,Cliques).
+
+getCliqueSizeN(X,N):- clique(X),length(X,N).
+
+returnMax(NSize,BSize,Cliques):- returnMax(NSize,BSize,Cliques,[]).
+
+returnMax([NHead|NTail],BSize,Cliques,AccmL):- 
+	BSize\==[], 
+	( (subsetCheck(NHead,BSize)) -> 
+		append(AccmL,[],OutList), 
+		returnMax(NTail,BSize,Cliques,OutList)
+		; 
+		append(AccmL,[NHead],OutList),
+		returnMax(NTail,BSize,Cliques,OutList)
+		) .
+
+
+returnMax([],BSize,AccmL,AccmL).
+
+returnMax(NSize,[],NSize,_).
+
+subsetCheck(NClique,[BHead|BTail]):- (
+	(subset(NClique,BHead)) -> true ; subsetCheck(NClique,BTail)
+	).
+subsetCheck(_,[]):- fail.
